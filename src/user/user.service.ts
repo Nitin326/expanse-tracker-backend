@@ -22,7 +22,8 @@ export class UserService {
       const saltOrRounds = 10;
       const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
       userDto.password = hashedPassword;
-      return this.userModel.create(userDto);
+      const response = this.userModel.create(userDto);
+      return { status: 201, message:'Account Created Successfully', data:response};
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -51,7 +52,7 @@ export class UserService {
       };
 
       const token = this.authService.genrateToken(payload);
-      return { status: 200, token:token};
+      return { status: 200, message:'Login Successfully', token:token};
 
     } catch (err) {
       throw new InternalServerErrorException();
